@@ -257,7 +257,7 @@ uint32_t CDC_Send_DATA(const uint8_t *ptrBuffer, uint32_t sendLength)
   uint32_t start = millis();
    
   uint32_t pos=0;
-  while(pos<sendLength){
+  while(pos<=sendLength){//`=` is intended for sending 0 length packet
     int tosend=sendLength-pos;
     if(tosend>APP_TX_BLOCK_SIZE){
       tosend=APP_TX_BLOCK_SIZE;
@@ -268,6 +268,9 @@ uint32_t CDC_Send_DATA(const uint8_t *ptrBuffer, uint32_t sendLength)
       }
     }
     uint32_t txed=usb_vcp_send_data(&otg_core_struct.dev,(uint8_t *)(ptrBuffer+pos), tosend);
+    if(pos==sendLength){
+        break;
+    }
     if (txed==SUCCESS) {
       pos+=tosend;
     }
