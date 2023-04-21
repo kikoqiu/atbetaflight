@@ -257,7 +257,7 @@ uint32_t CDC_Send_DATA(const uint8_t *ptrBuffer, uint32_t sendLength)
   uint32_t start = millis();
    
   uint32_t pos=0;
-  while(pos<=sendLength){//`=` is intended for sending 0 length packet
+  while(pos < sendLength || (pos==sendLength && sendLength%64 == 0) ){//`==` is intended for sending 0 length packet
     int tosend=sendLength-pos;
     if(tosend>APP_TX_BLOCK_SIZE){
       tosend=APP_TX_BLOCK_SIZE;
